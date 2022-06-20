@@ -2,16 +2,18 @@ import os
 import uuid
 
 from flask import Flask, jsonify
+from flask_cors import CORS, cross_origin
 from pycep import PyCep
 
 app = Flask(__name__)
+CORS(app)
 
 @app.route("/")
 def hello_world():
     return "<p>Hello, World!</p>"
 
-
 @app.route('/cep/<numerocep>')
+@cross_origin()
 def busca_cep(numerocep):
         cep = PyCep(numerocep)
         return jsonify(cep.dadosCep)
