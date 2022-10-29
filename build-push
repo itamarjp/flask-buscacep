@@ -1,0 +1,2 @@
+podman build -f Dockerfile -t registry.ispbrasil.com.br/flask-buscacep:5
+podman push registry.ispbrasil.com.br/flask-buscacep:5 --tls-verify=false
