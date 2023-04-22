@@ -1,0 +1,42 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: kaniko-build-busca-cep
+spec:
+  backoffLimit: 4
+  activeDeadlineSeconds: 300
+  ttlSecondsAfterFinished: 1800
+  template:
+    spec:
+      containers:
+        - name: kaniko
+          image: gcr.io/kaniko-project/executor:latest
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "1"
+          env:
+            - name: GIT_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: itamarjp-github-secret
+                  key: username
+            - name: GIT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: itamarjp-github-secret
+                  key: password
+            - name: DOCKER_INSECURE_SKIP_TLS_VERIFY
+              value: "true"
+          args:
+            [
+              "--dockerfile=Dockerfile",
+              "--context=git://github.com/itamarjp/flask-buscacep",
+              "--destination=registry.ispbrasil.com.br/flask-buscacep:5",
+              "--build-arg=GIT_USERNAME=$(GIT_USERNAME)",
+              "--build-arg=GIT_PASSWORD=$(GIT_PASSWORD)",
+              "--build-arg=DOCKER_INSECURE_SKIP_TLS_VERIFY=true",
+              "--insecure-registry=registry.ispbrasil.com.br",
+              "--skip-tls-verify-registry=registry.ispbrasil.com.br",
+            ]
+      restartPolicy: Never
