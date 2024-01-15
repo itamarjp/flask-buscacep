@@ -32,7 +32,7 @@ spec:
             [
               "--dockerfile=Dockerfile",
               "--context=git://github.com/itamarjp/flask-buscacep",
-              "--destination=registry.ispbrasil.com.br/flask-buscacep:5",
+              "--destination=registry.ispbrasil.com.br/flask-buscacep",
               "--build-arg=GIT_USERNAME=$(GIT_USERNAME)",
               "--build-arg=GIT_PASSWORD=$(GIT_PASSWORD)",
               "--build-arg=DOCKER_INSECURE_SKIP_TLS_VERIFY=true",
